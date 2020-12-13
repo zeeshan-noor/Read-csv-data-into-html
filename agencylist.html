@@ -35,11 +35,21 @@
 	
 	</style>
 <body>
-	<input type="file" id="fileBox" />
+	<input  type="file" id="fileBox" />
 
 <br />
 <br />
-<div  id="dropdown" style="width: 50%;height: 50px;text-align: center;margin-left: 20%;"></div>
+<div  id="dropdown" style="width: 50%;height: 50px;text-align: center;margin-left: 20%;">
+</div>
+<center>
+	<label for="fname">POSTCODE:</label>
+	<input  type="text" onfocus="this.value=''" id="Pcode" name="POSTCODE">
+	<label for="fname">CITY:</label>
+	<input type="text" onfocus="this.value=''" id="city" name="CITY">
+	<button onclick="_CreateDropdown()" style="background-color: rgba(253, 253, 246, 0.459);"></button>
+
+<p id="demo"></p>
+</center>
 <div style="background-color: rgba(202, 195, 195, 0.267);font-size: large;">
 	<h2>Search for the agency closest to you</h2>
 	<div class="row" style="padding-left: 20%;">
@@ -76,25 +86,57 @@
 
 	function _CreateDropdown() {
 		var $tmpHTML = '<select onchange="_UpdateFields(this.value)">';
-		for(var $a = 0; $a < $csvData.length; $a++) $tmpHTML += '<option value="' + $a + '">' + $csvData[$a][$colNames[0]] + '</option>';
+		for(var $a = 0; $a < $csvData.length; $a++) 
+		{
+		$tmpHTML += '<option value="' + $a + '">' + $csvData[$a][$colNames[4]] + '</option>';
+		
+		}
 		$tmpHTML += '</select>';
 		document.getElementById("dropdown").innerHTML = $tmpHTML;
+		
 		_UpdateFields(0);
 	}
 	function _UpdateFields($a) {
+		// $a=0;
 		var $tmpHTML = '';
+	
+		var valuetxt1 = document.getElementById('Pcode').value;
+		var valuetxt2 = document.getElementById('city').value;
+		console.log(valuetxt1)
+		console.log(valuetxt2)
+
+	if(valuetxt1=="" && valuetxt2=="")
+	{
+		alert("Please Enter Value:")
+	}
+	else {
+
 		for(var $b = 0; $b < $colNames.length; $b++) {
-			console.log($colNames[$b], $csvData[$a][$colNames[$b]]);
-			if($csvData[$a][$colNames[$b]] != "") 
-			$tmpHTML += "  "+$colNames[$b] + ': <input id="' + $colNames[$b] + '" name= "' + $colNames[$b] + '"  type="text" value="' + $csvData[$a][$colNames[$b]] + '" <br/>';
+			// console.log( $csvData[$a]["POSTCODE"]);
+			console.log( $csvData[$a]["CITY"]);
+			// console.log( $csvData[$a]["COUNTRY"]);
+
+			if(valuetxt1==$csvData[$a]["POSTCODE"] && valuetxt2== $csvData[$a]["CITY"])
+			{
+				
+				if($csvData[$a][$colNames[$b]] != "") 
+			{
+				
+				$tmpHTML += "  "+$colNames[$b] + ': <input id="' + $colNames[$b] + '" name= "' + $colNames[$b] + '"  type="text" value="' + $csvData[$a][$colNames[$b]] + '" <br/>';
+			}
+			}
 	
 		}
+		
+	}
+
 		document.getElementById("fields").innerHTML = $tmpHTML;
 	}
 
 	window.onload = function() {
 		document.getElementById('fileBox').onchange = function(){ _ReadCSV(this); }
 	}
+	
 </script>
 
 </body>
